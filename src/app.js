@@ -1,13 +1,13 @@
 import React from "react";
+import "./machine.css";
+import UltimateMachine from "./ultimatemachine";
 
-import Counter from "./counter";
-import Random from "./random";
-
-const App = () => (
-  <React.Fragment>
-    <Counter />
-    <Random />
-  </React.Fragment>
-);
+const App = () => {
+  return (
+    <React.Fragment>
+      <UltimateMachine />
+    </React.Fragment>
+  );
+};
 
 export default App;
