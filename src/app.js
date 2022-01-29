@@ -1,11 +1,11 @@
 import React from "react";
 import "./machine.css";
-import UltimateMachine from "./ultimatemachine";
+import Counter from "./Counter";
 
 const App = () => {
   return (
     <React.Fragment>
-      <UltimateMachine />
+      <Counter />
     </React.Fragment>
   );
 };

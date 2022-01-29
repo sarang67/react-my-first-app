@@ -1,87 +1,48 @@
-import React, { useState, Fragment } from "react";
-import InrectiveView from "./interctiveView";
+import React, { useState, Fragment, useEffect } from "react";
 
-// Counter Component
-const Counter = () => {
-  console.log(React);
-  let [counter, setCounter] = React.useState(0); // [initalvalue , function]
-
-  const onIncerementhandler = () => {
-    // counter = counter + 1; //---> wrong
-    setCounter(counter + 1); // --> right way react
-  };
-
-  return (
-    <InrectiveView
-      value={counter}
-      onAction={onIncerementhandler}
-      actionText="Increment"
-    />
-  );
-};
-
-export default Counter;
+//8)  Handling basic side effects
 
 /*
-
-// --> 1)  Adding the event handler to the element (for user interaction)
-// --> 2)  Adding state with the useState hook
-
-
-
-import React, { useState, Fragment } from "react";
+React.useEffect is a built-in hook that allows you to run some custom code after React renders (and re-renders) your component to the DOM. 
+It accepts a callback function which React will call after the DOM has been updated:
+  
+  React.useEffect(() => {
+    // your side-effect code here.
+    // this is where you can make HTTP requests or interact with browser APIs.
+  });
+*/
 
 const Counter = () => {
-  console.log(React);
-  let [counter, setCounter] = React.useState(0); // [initalvalue , function]
+  let [counter, setCounter] = React.useState(0);
+  let [internalCounter, seInternalCounter] = React.useState(0);
 
-  const onClickHandler = () => {
-    // counter = counter + 1; //---> wrong
-    setCounter(counter + 1); // --> right way react
+  useEffect(() => {
+    // i am a effect function
+    document.title = `Count ${counter} ${internalCounter} `;
+    console.log("2 title changed");
+  }, [counter]);
+
+  const onCountClickHandler = () => {
+    setCounter(counter + 1);
   };
+
+  const onInternalCountertClickHandler = () => {
+    seInternalCounter(internalCounter + 1);
+  };
+
+  console.log("1 rendering");
 
   return (
     <React.Fragment>
       <p>{counter}</p>
-      <button type="button" onClick={onClickHandler}>
+      <button type="button" onClick={onCountClickHandler}>
         Increment
+      </button>
+      <button type="button" onClick={onInternalCountertClickHandler}>
+        Internal count increment
       </button>
     </React.Fragment>
   );
 };
 
 export default Counter;
-*/
-
-/*
-
-// ---> 3) Oneway Data Flow in Components
-
-import React, { useState, Fragment } from "react";
-
-// CounterView Component
-const CounterView = ({ counterValue, onIncrement }) => {
-  return (
-    <React.Fragment>
-      <p>{counterValue}</p>
-      <button type="button" onClick={onIncrement}>
-        Increment
-      </button>
-    </React.Fragment>
-  );
-};
-
-
-const Counter = () => {
-  const [count, setCount] = useState(0);
-
-  const onIncrementHandler = () => {
-    setCount(count + 1);
-  };
-
-  return <CounterView counterValue={count} onIncrement={onIncrementHandler} />;
-};
-
-export default Counter;
-
-*/
