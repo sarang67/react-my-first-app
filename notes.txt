@@ -1,0 +1,235 @@
+Intro to raw React APIs
+=========================
+React is the most widely used frontend framework in the world and it’s using the same APIs that you’re using when it creates DOM nodes.
+One important thing to know about React is that it supports multiple platforms (for example, native and web). Each of these platforms has its own code necessary for interacting with that platform, and then there’s shared code between the platforms.
+With that in mind, you need two JavaScript files to write React applications for the web:
+
+React: responsible for creating React elements (kinda like document.createElement())
+ReactDOM: responsible for rendering React elements to the DOM (kinda like rootElement.append())
+
+Here’s a simple example of the API:
+
+const elementProps = {id: 'element-id', children: 'Hello world!'}
+const elementType = 'h1'
+const reactElement = React.createElement(elementType, elementProps)
+ReactDOM.render(reactElement, rootElement)
+
+
+Using JSX
+=========
+JSX is more intuitive than the raw React API and is easier to understand when reading the code. It’s fairly simple HTML-like syntactic sugar on top of the raw React APIs:
+
+const ui = <h1 id="greeting">Hey there</h1>
+
+// ↓ ↓ ↓ ↓ compiles to (using BABEL) ↓ ↓ ↓ ↓
+
+const ui = React.createElement('h1', {id: 'greeting', children: 'Hey there'})
+
+Interpolation
+==============
+
+const className = 'container'
+const children = 'Hello World'
+const element = <div className="{className}">{children}</div>
+
+Creating custom components
+==========================
+Just like in regular JavaScript, you often want to share code which you do using functions. If you want to share JSX, you can do that as well. In React we call these functions “components” and they have some special properties.
+
+Components are basically functions which return something that is “renderable” (more React elements, strings, null, numbers, etc.)
+
+const Message = ({subject, greeting}) => {
+  return (
+    <div className="message">
+      {greeting}, {subject}
+    </div>
+  )
+}
+
+
+<Message greeting="Hello" subject="World" />
+<Message greeting="Goodbye" subject="World" />
+
+
+Rendering Arrays
+===============
+One of the more tricky things with React is the requirement of a key prop when you attempt to render a list of elements.
+
+const list = ['One', 'Two', 'Three']
+
+const ui = (
+  <ul>
+    {list.map(listItem => (
+      <li>{listItem}</li>
+    ))}
+  </ul>
+)
+
+So we’re interpolating an array of renderable elements. This is totally acceptable, but it has interesting implications for when things change over time.
+
+If you re-render that list with an added item, React doesn’t really know whether you added an item in the middle, beginning, or end. And the same goes for when you remove an item (it doesn’t know whether that happened in the middle, beginning, or end either). so for solving this problem we have to use key properties, which is uniques so our react can track as per key.
+
+const list = ['One', 'Two', 'Three']
+
+const ui = (
+  <ul>
+    {list.map(listItem => (
+      <li key={`any unique key for each item`}>{listItem}</li>
+    ))}
+  </ul>
+)
+
+
+
+
+React Hoks
+=========
+Normally an interactive application will need to hold state somewhere. In React, you use special functions called “hooks” to do this. Common built-in hooks include:
+
+React.useState
+React.useEffect
+React.useContext
+React.useRef
+React.useReducer
+
+Each of these is a special function that you can call inside your custom React component function to store data (like state) or perform actions (or side-effects). There are a few more built-in hooks that have special use cases, but the ones above are what you’ll be using most of the time.
+
+Each of the hooks has a unique API. Some return a value (like React.useRef and React.useContext), others return a pair of values (like React.useState and React.useReducer), and others return nothing at all (like React.useEffect).
+
+
+React.useState
+==============
+React.useState is a function that accepts a single argument. That argument is the initial state for the instance of the component. In our case, the state will start as 0.
+
+React.useState returns a pair of values. It does this by returning an array with two elements (and we use destructuring syntax to assign each of those values to distinct variables). The first of the pair is the state value and the second is a function we can call to update the state. We can name these variables whatever we want. Common convention is to choose a name for the state variable, then prefix set in front of that for the updater function.
+
+State can be defined as: data that changes over time. So how does this work over time? When the button is clicked, our increment function will be called at which time we update the count by calling setCount.
+
+When we call setCount, that tells React to re-render our component. When it does this, the entire Counter function is re-run, so when React.useState is called this time, the value we get back is the value that we called setCount with. And it continues like that until Counter is unmounted (removed from the application), or the user closes the application.
+
+
+const Counter= () => {
+  const [count, setCount] = React.useState(0)
+  const increment = () => setCount(count + 1)
+  return <button onClick={increment}>{count}</button>
+}
+
+
+
+React.useEffect:-
+=================
+
+React.useEffect is a built-in hook that allows you to run some custom code after React renders (and re-renders) your component to the DOM. It accepts a callback function which React will call after the DOM has been updated:
+
+React.useEffect(() => {
+  // your side-effect code here.
+  // this is where you can make HTTP requests or interact with browser APIs.
+})
+
+EX1 : useeffect without any deps
+--------------------------------
+useEffect(()=> {
+	// function will always run when your component will render and re render.
+})
+
+EX2 : useeffect with empty deps , only once in life 
+--------------------------------------------------
+useEffect(()=> {
+	// function will run when your component will render  only once in lifetime always when component will be mount.
+}, [])
+
+EX3 : useeffect with deps list , beased on deps
+-----------------------------------------------
+
+useEffect(()=> {
+	// function will run when your component will render and rerender in case (only based on deps list changed).
+}, [deps])
+
+
+EX4 : useeffect without any deps , and cleanup fn
+--------------------------------------------------
+
+useEffect(()=> {
+	// function will always run when your component will render and re render.
+	
+	return function cleanup(){
+		// This is the cleanup function , this will only run when component will unmount or died , or update.
+	}
+})
+
+EX5 : useeffect with empty deps , only once in life  , and cleanup fn
+--------------------------------------------------------------------
+useEffect(()=> {
+	// function will run when your component will render  only once in lifetime always when component will be mount.
+	
+	return function cleanup(){
+		// This is the cleanup function , this will only run  when component will unmount or died , no run on update.
+	}
+}, [])
+
+EX6 : useeffect with deps list , beased on deps,, and cleanup fn
+----------------------------------------------------------------
+
+useEffect(()=> {
+	// function will run when your component will render and rerender in case (only based on deps list changed).
+	return function cleanup(){
+		// // This is the cleanup function , this will only run when component will unmount or died , or update ((only based on deps list changed).).
+	}
+}, [deps])
+
+
+Note:-
+all cleanup function will run in case of update and unmount phase .
+
+summary :-
+--------------
+
+cleanup with  no dependency array
+=========================================
+this will work always , whenever view rendered or re renderd 
+mount --> effect function will run
+update --> cleaun up will run first, and  effect will again run
+when unmount --> cleanup will run 
+
+  useEffect(() => {
+    subscribe();
+    return () => {
+      unSubscribe();
+    };
+  });  
+
+
+
+cleanup with  filled dependency array [] :-
+========================================
+this will work whenever dependency change, and first runc the cleanup ,and then run the effect
+mount --> effect function will run
+update --> cleaun up will run, and  effect will again run
+when unmount --> cleanup will run 
+
+   useEffect(() => {
+     subscribe();
+     return () => {
+       unSubscribe();
+     };
+   }, [counter]);
+
+cleanup with empty dependency array []:-
+============================================
+this will work in once in life of component 
+mount --> effect function will run
+update --> Nothing will happen
+when unmount --> cleanup will run 
+
+   useEffect(() => {
+     subscribe();
+     return () => {
+       unSubscribe();
+     };
+   }, []);
+
+
+
+   Understanding shallow dependency checks , Rules of Depndency check
+   -----------------------------------------------------------------
+   usestate and useref , only do check the shallow check , means here premitive type will check by actual value , and all object type(object array function) will be checked by address or refrence , so make sure if you are gving object type in useref dependecy , you are not sending the  same refrence , you have to send always new refrence (using spread operator or Object.assign), then only it will treat something has been changed.
