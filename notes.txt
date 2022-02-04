@@ -110,7 +110,8 @@ When we call setCount, that tells React to re-render our component. When it does
 
 const Counter= () => {
   const [count, setCount] = React.useState(0)
-  const increment = () => setCount(count + 1)
+  const increment = () => setCount(count + 1)  
+  // const increment = () => setCount((count)=> count+1);  
   return <button onClick={increment}>{count}</button>
 }
 
@@ -179,8 +180,7 @@ useEffect(()=> {
 
 
 Note:-
-all cleanup function will run in case of update and unmount phase .
-
+all cleanup function will run in case of update and unmount phase , except empty [] depds
 summary :-
 --------------
 
