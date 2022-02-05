@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const StopWatch = () => {
   const [time, setTime] = useState(0);
   const [counterActive, setCounterActive] = useState(true);
+  const value = useRef(0); // value {current:intialvalue }
+
+  // value.curennt =  value.curennt + 1;
+  console.log("value----> ", value);
 
   const onCLickHandler = () => {
     // setCounterActive(!counterActive);
@@ -14,7 +18,9 @@ const StopWatch = () => {
     let interval = null;
     if (counterActive) {
       interval = setInterval(() => {
-        setTime((oldvalue) => oldvalue + 1);
+        // setTime((oldvalue) => oldvalue + 1);
+        value.current = value.current + 10;
+        setTime(value.current);
       }, 1000);
     }
 
@@ -26,6 +32,7 @@ const StopWatch = () => {
 
   return (
     <section>
+      {value.current}
       <h1>Stop Counter</h1>
       <div>
         <span>{time}</span>
@@ -100,12 +107,16 @@ const StopWatch = () => {
   useEffect(() => {
     console.log("I am a effet function ");
     let interval = null;
-    interval = setInterval(() => {
+    interval = setInterval(
+      
+      () => {
       //setTime(time + 1);
       // issue fixed using callback function
       setTime((time) => time + 1);
       console.log("work");
-    }, 1000);
+    }
+    
+    , 1000);
 
     return () => {
       console.log("I am a effet cleanup function function ");
@@ -148,6 +159,7 @@ const StopWatch = () => {
   useEffect(() => {
     console.log("I am a effet function ");
     let interval = null;
+
     if (counterActive) {
       interval = setInterval(() => {
         //setTime(time + 1);

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "./machine.css";
-import StopWatch from "./stopwatch";
+import Form from "./form";
 
 const App = () => {
   return (
     <React.Fragment>
-      <StopWatch />
+      <Form />
     </React.Fragment>
   );
 };
