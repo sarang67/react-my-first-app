@@ -1,0 +1,212 @@
+
+**********************Thinking in Components**********************
+
+1) From design to rough Component outline :- this is about theory.
+2) Building a static React view from the design :- code is below for all files
+3) From static view to statefull app (lifting the state concept) :- No need for this , for this you can refer latest code
+
+
+2) Building a static React view from the design
+==================================================
+First create a static view, so this is recommended by react , whenever we start any application we should create static view first.
+
+--> create a new folder for this app record-collections
+--> there would be 5 component and and one css file(which will go to container)
+   ==> 1) record.css
+   ==> 2) container.js component --> main component
+   ==> 3) header.js
+   ==> 4) section.js
+   ==> 5) list.js
+   ==> 6) form.js
+   
+   
+ 1) record.css
+--------------
+body {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "comic sans MS" sans-serif;
+  background-color: #f5f4ed;
+}
+
+.visually-hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+header {
+  text-align: center;
+  padding: 16px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+main {
+  padding-left: 8px;
+  padding-right: 8px;
+  display: flex;
+}
+
+main section {
+  border-top: 2px solid black;
+  width: 50%;
+}
+
+main h2 {
+  text-align: center;
+}
+
+main form {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+main form input,
+main form textarea {
+  min-height: 24px;
+  margin-bottom: 16px;
+}
+
+main form button {
+  font-size: x-large;
+  margin-bottom: 0;
+}
+
+main ul {
+  margin: 16px;
+  padding: 0;
+  list-style: none;
+}
+
+main ul li {
+  border-radius: 12px;
+  border: 2px solid black;
+  background-color: whitesmoke;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+container.js
+------------
+import React, { Fragment } from "react";
+import Header from "./header";
+import Section from "./section";
+import List from "./list";
+import Form from "./form";
+
+import "./records.css";
+
+const Container = () => (
+  <Fragment>
+    <Header />
+    <main>
+      <Section headingText="Add a new favuoirate">
+        <Form />
+      </Section>
+      <Section headingText="Records">
+        <List />
+      </Section>
+    </main>
+  </Fragment>
+);
+
+export default Container;
+
+
+header.js
+---------
+import React from "react";
+
+const Header = () => {
+  return (
+    <header>
+      <h1>My favourite records</h1>
+    </header>
+  );
+};
+
+export default Header;
+
+
+section.js
+-----------
+import React from "react";
+
+const Section = ({ children, headingText, headingLevel = 2 }) => {
+  const H = `h${headingLevel}`;
+  return (
+    <section>
+      <H>{headingText}</H>
+      {children}
+    </section>
+  );
+};
+
+export default Section;
+
+
+list.js
+-------
+import React from "react";
+
+const records = [
+  {
+    recordName: "3 Idiots",
+    artistName: "Aamir Khan , R. Madhavan, Sharman Joshi",
+    description:
+      "3 Idiots is a 2009 Indian Tamil-language coming-of-age comedy-drama film written, edited and directed by Rajkumar Hirani",
+  },
+  {
+    recordName: "Chak De! India",
+    artistName: "Sharukh Khan",
+    description:
+      "Chak De! India ( transl. Let's Go! India) is a 2007 Indian Hindi-language sports film directed by Shimit Amin and produced by Aditya Chopra.",
+  },
+];
+
+const List = () => {
+  return (
+    <ul>
+      {records.map((record) => {
+        const { recordName, artistName, description } = record;
+        return (
+          <li key={recordName}>
+            <h3>{recordName}</h3>
+            <span>{artistName}</span>
+            <p>{description}</p>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
+export default List;
+
+form.js
+-------
+import React from "react";
+
+const Form = () => (
+  <form>
+    <label htmlFor="recordName">Reacord Name</label>
+    <input id="recordName" name="recordName" />
+
+    <label htmlFor="artistName">Artist Name</label>
+    <input id="artistName" name="artistName" />
+
+    <label htmlFor="description">Description</label>
+    <textarea id="description" name="description" rows={10} />
+
+    <button type="submit">Add Reacord</button>
+  </form>
+);
+
+export default Form;

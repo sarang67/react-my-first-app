@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Form from "./form";
+import Container from "./record-collection/container";
 
 const App = () => {
   return (
     <React.Fragment>
-      <Form />
+      <Container />
     </React.Fragment>
   );
 };
