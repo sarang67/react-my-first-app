@@ -233,3 +233,25 @@ when unmount --> cleanup will run
    Understanding shallow dependency checks , Rules of Depndency check
    -----------------------------------------------------------------
    usestate and useref , only do check the shallow check , means here premitive type will check by actual value , and all object type(object array function) will be checked by address or refrence , so make sure if you are gving object type in useref dependecy , you are not sending the  same refrence , you have to send always new refrence (using spread operator or Object.assign), then only it will treat something has been changed.
+
+
+54 Understanding HTTP requests
+==============================
+ client server communication user HTTP protoclol , http://localhost:3000 port which is server  is running on our computer are serving index.html and all the assests they are coming from http protoclol. you can see on network tab
+
+See the request, response, headerand genral information
+
+Http useful methods
+--------------------
+get     --> get the data from server
+post    --> post the data to server
+put     --> update the data to server
+delete  --> delete the data request to server
+
+and after making request you may get any statue code below
+------------------------------------------------------
+code which comes in 200 line means success
+300 -399 ---> redirect
+400-499 --> means there is some issue with request , so server is giving error.
+500-599 --> some issue from server side , so server creating some error.
+
