@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./record.css";
 
 import Header from "./header";
@@ -6,28 +6,26 @@ import Section from "./section";
 import List from "./list";
 import Form from "./form";
 
-const recordData = [
-  {
-    recordName: "3 Idiots",
-    artistName: "Amir khan",
-    description:
-      "3 Idiots is a 2009 Indian Tamil-language coming-of-age comedy-drama film written, edited and directed by Rajkumar Hirani and co-written by Abhijat Joshi",
-  },
+import axios from "axios";
 
-  {
-    recordName: "Chak De! India",
-    artistName: "Sharukh khan",
-    description:
-      "Chak De! India ( transl. Let's Go! India) is a 2007 Indian Hindi-language sports film directed by Shimit Amin and produced by Aditya Chopra,",
-  },
-];
+const API = `http://localhost:3000/recordData`;
 
 const Container = () => {
-  const [records, setRecords] = useState(recordData);
+  const [records, setRecords] = useState([]);
 
-  const onFormSubmitHandler = (entry) => {
-    setRecords([...records, entry]);
+  const onFormSubmitHandler = async (entry) => {
+    axios.post(API, entry).then((res) => {
+      const data = res.data;
+      setRecords([...records, data]);
+    });
   };
+
+  useEffect(() => {
+    axios.get(API).then((res) => {
+      const data = res.data;
+      setRecords(data);
+    });
+  }, []);
 
   return (
     <Fragment>
