@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import "./record.css";
 
 import Header from "./header";
@@ -10,21 +10,39 @@ import axios from "axios";
 
 const API = `http://localhost:3000/recordData`;
 
-const Container = () => {
+const Container = ({ setShowApp }) => {
   const [records, setRecords] = useState([]);
+  const isMount = useRef(true);
 
   const onFormSubmitHandler = async (entry) => {
-    axios.post(API, entry).then((res) => {
-      const data = res.data;
-      setRecords([...records, data]);
+    axios.post(API, entry).then((succdata) => {
+      if (isMount.current) {
+        const entry = succdata.data;
+        setRecords([...records, entry]);
+      }
     });
+    setShowApp(false);
   };
 
   useEffect(() => {
-    axios.get(API).then((res) => {
-      const data = res.data;
-      setRecords(data);
-    });
+    axios
+      .get(API, {
+        headers: {
+          "Cache-Control": "private",
+          "x-custom-header": "this is cutom header",
+          "x-authentication-key": "jahskdjhaklshlkd122jk",
+        },
+      })
+      .then((res) => {
+        if (isMount.current) {
+          const data = res.data;
+          setRecords(data);
+        }
+
+        return () => {
+          isMount.current = false;
+        };
+      });
   }, []);
 
   return (
@@ -42,4 +60,9 @@ const Container = () => {
   );
 };
 
-export default Container;
+const Wrapper = () => {
+  const [showApp, setShow] = useState(true);
+  return showApp && <Container setShowApp={setShow} />;
+};
+
+export default Wrapper;

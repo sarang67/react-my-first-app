@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Container from "./record-collection/container";
+import Wrapper from "./record-collection/container";
 
 const App = () => {
   return (
     <React.Fragment>
-      <Container />
+      <Wrapper />
     </React.Fragment>
   );
 };
