@@ -1,0 +1,34 @@
+body {
+  box-sizing: border-box;
+  font-family: "comic sans MS" sans-serif;
+  background-color: #f5f4ed;
+}
+main,
+footer {
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+main section h1,
+footer section h1 {
+  text-align: center;
+}
+dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+dl dt {
+  justify-self: right;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+nav[aria-label="main"] li {
+  display: flex;
+  justify-content: center;
+}
+footer ul {
+  display: flex;
+  justify-content: space-around;
+}

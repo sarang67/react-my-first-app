@@ -12,19 +12,28 @@ const API = `http://localhost:3000/recordData`;
 
 const Container = ({ setShowApp }) => {
   const [records, setRecords] = useState([]);
-  const isMount = useRef(true);
+  const isMount = useRef(true); // {current :true }
 
   const onFormSubmitHandler = async (entry) => {
-    axios.post(API, entry).then((succdata) => {
-      if (isMount.current) {
-        const entry = succdata.data;
-        setRecords([...records, entry]);
-      }
-    });
+    // use fetch . async await with error handling
+    axios
+      .post(API, entry, {
+        headers: {
+          "Cache-Control": "private",
+          "X-my-own-header": "spmevalue",
+        },
+      })
+      .then((succdata) => {
+        if (isMount.current) {
+          const entry = succdata.data;
+          setRecords([...records, entry]);
+        }
+      });
     setShowApp(false);
   };
 
   useEffect(() => {
+    // use fetch . async await with error handling
     axios
       .get(API, {
         headers: {
@@ -38,11 +47,12 @@ const Container = ({ setShowApp }) => {
           const data = res.data;
           setRecords(data);
         }
-
-        return () => {
-          isMount.current = false;
-        };
       });
+
+    // cleamup function
+    return () => {
+      isMount.current = false;
+    };
   }, []);
 
   return (
