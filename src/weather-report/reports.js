@@ -1,5 +1,6 @@
 import React from "react";
 import { wetaherdata } from "./weatherData";
+import Section from "./section";
 
 const Reports = ({ match }) => {
   console.log(match);
@@ -8,8 +9,8 @@ const Reports = ({ match }) => {
 
   console.log(data);
   return (
-    <section>
-      <h1>Your weather report in {scale.toUpperCase()}</h1>
+    <Section headingText={`Your weather report in ${scale.toUpperCase()}`}>
+      {/* <h1>Your weather report in {scale.toUpperCase()}</h1> */}
       <dl>
         {data.map((item) => {
           return (
@@ -20,7 +21,7 @@ const Reports = ({ match }) => {
           );
         })}
       </dl>
-    </section>
+    </Section>
   );
 };
 

@@ -1,10 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Section from "./section";
 
-const Home = () => {
+const Home = ({ history, location, match }) => {
   return (
-    <section>
-      <h1>Welcome to the weather report</h1>
+    <Section headingText="Welcome to the weather report">
+      {/* <h1>Welcome to the weather report</h1> */}
+
+      <p>
+        Please select one of the options below to view the current wyather based
+        on your choice of scale
+      </p>
       <nav>
         <ul>
           <li>
@@ -18,11 +24,7 @@ const Home = () => {
           </li>
         </ul>
       </nav>
-      <p>
-        Please select one of the options below to view the current wyather based
-        on your choice of scale
-      </p>
-    </section>
+    </Section>
   );
 };
 
